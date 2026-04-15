@@ -1,0 +1,182 @@
+{
+  "name": "commit_label_equivalence_analysis",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "reasoning": {
+        "type": "object",
+        "properties": {
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "group": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "label",
+                      "description"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "explanation": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "group",
+                "explanation"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "non_feature_labels": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "group": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "label",
+                      "description"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "explanation": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "group",
+                "explanation"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "features",
+          "non_feature_labels"
+        ],
+        "additionalProperties": false
+      },
+      "result": {
+        "type": "object",
+        "properties": {
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "merged_from": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "label",
+                      "description"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "label",
+                "description",
+                "merged_from"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "non_feature_labels": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "merged_from": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "label",
+                      "description"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "label",
+                "description",
+                "merged_from"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "features",
+          "non_feature_labels"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "reasoning",
+      "result"
+    ],
+    "additionalProperties": false
+  }
+}

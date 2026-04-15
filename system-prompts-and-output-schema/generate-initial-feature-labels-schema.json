@@ -1,0 +1,68 @@
+{
+  "name": "commit_analysis",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "overview": {
+        "type": "string",
+        "description": "A single coherent paragraph summarizing the purpose, nature, and major areas of the project as inferred from commit messages.",
+        "minLength": 1
+      },
+      "features": {
+        "type": "array",
+        "description": "A deduplicated list of user- or API-facing high-level product capabilities, each with a normalized label and concise description.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "description": "A concise, normalized Title Case label for the feature.",
+              "minLength": 1
+            },
+            "description": {
+              "type": "string",
+              "description": "A 2-3 sentence description of this feature omitting project-specific implementation details and terminology, making it suitable for a broader range of similar projects. These should be applicable to similar projects in the same domain.",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "label",
+            "description"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "non_feature_labels": {
+        "type": "array",
+        "description": "A deduplicated list of normalized maintenance/process area labels (not user- or API-facing functional features), each with a Title Case label and specific description.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "description": "A concise, normalized Title Case label for the process or maintenance area, not a user-facing feature, and avoiding implementation-specific terminology. These should be applicable to similar projects in the same domain.",
+              "minLength": 1
+            },
+            "description": {
+              "type": "string",
+              "description": "A 2-3 sentence description of this area.",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "label",
+            "description"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "overview",
+      "features",
+      "non_feature_labels"
+    ],
+    "additionalProperties": false
+  }
+}

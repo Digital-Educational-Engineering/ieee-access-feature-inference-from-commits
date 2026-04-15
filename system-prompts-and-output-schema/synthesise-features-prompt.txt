@@ -1,0 +1,161 @@
+You are given two lists representing "features" and "non-feature labels", each containing labels and accompanying descriptions. These represent the kinds of commits in a software development repository. Your objective is to synthesize two final lists:
+- A deduplicated, shortened list of features.
+- A deduplicated, shortened list of non-features.
+
+For this task:
+- Many items may be equivalent (either by identical or synonymous labels, or by highly similar descriptions even if the labels differ).
+- Use the descriptions to reason about equivalency, not just the label text.
+- Collapse all equivalent items into a single entry per list. Do not allow duplicates in the result.
+
+For transparency, in each synthesized list, output a mapping: the final (synthesized) label and description, along with all input label+description pairs that were considered equivalent and merged into that entry.
+
+Before presenting your output, explicitly describe your reasoning for equivalence: for each group you collapse, briefly explain how the label+description pairs are equivalent.
+
+# Steps
+
+1. For each list ("features", "non_feature_labels"):
+   - Review all pairs of label+description.
+   - Compare each to all others in the same list.
+   - Group pairs that are equivalent or nearly synonymous, based on both label and description.
+   - For each equivalence group, decide on a single, best representative label+description.
+   - Track all input label+description pairs included in each group (for maximum transparency).
+
+2. Before producing the output, write a succinct explanation for each group, stating which items were grouped and why, citing similarities in label and/or description.
+
+3. Finally, produce two lists ("features", "non_feature_labels"), each a list of:
+    - label: The synthesized label for this equivalence class/group.
+    - description: The synthesized representative description for this group.
+    - merged_from: A list of the original input items (label+description) merged into this output.
+
+# Output Format
+
+Present your output as a structured JSON object with the following format:
+
+{
+  "reasoning": {
+    "features": [
+      {
+        "group": [array of input label+desc being merged],
+        "explanation": [explanation for merging this group]
+      },...
+    ],
+    "non_feature_labels": [
+      {... },...
+    ]
+  },
+  "result": {
+    "features": [
+      {
+        "label": [final representative label],
+        "description": [final representative description],
+        "merged_from": [
+          { "label": [input label], "description": [input description] },
+          ...
+        ]
+      },...
+    ],
+    "non_feature_labels": [
+      {
+        "label": [final representative label],
+        "description": [final representative description],
+        "merged_from": [
+          { "label": [input label], "description": [input description] },
+          ...
+        ]
+      },...
+    ]
+  }
+}
+
+Be sure to always put your reasoning (group explanations) before your synthesized lists.
+
+# Examples
+
+Example input: 
+{
+  "features": [
+    { "label": "Access Control", "description": "Provides secure sign‑up, sign‑in, refresh, and logout using token‑based authentication. Supports social login and enforces role‑based permissions so only authorized users can perform protected actions. Centralized security middleware protects endpoints and manages session validity." },
+    { "label": "Access Control", "description": "Enforces role-based permissions on endpoints and actions. Ensures different user roles (such as students, instructors, and administrators) have appropriate access to protected resources." },
+    { "label": "Analytics and Dashboards", "description": "Delivers learner dashboards with progress, upcoming deadlines, and course metrics. Exposes analytics endpoints for administrators to monitor activity, performance, and completion trends." }
+  ],
+  "non_feature_labels": [
+    { "label": "API Documentation", "description": "Generates and maintains interactive API documentation using standardized annotations. Keeps endpoints discoverable and current for client developers and integrators." },
+    { "label": "API Documentation", "description": "Refines which components are exposed in interactive API documentation and how they appear. Ensures documentation remains clear and focused on relevant endpoints." },
+    { "label": "Bug Fixes", "description": "Corrects defects across controllers, authorization rules, scheduling logic, and data mapping to improve reliability. Resolves edge cases and ensures consistent responses and error handling." }
+  ]
+}
+
+Example output: 
+{
+  "reasoning": {
+    "features": [
+      {
+        "group": [
+          { "label": "Access Control", "description": "Provides secure sign‑up, sign‑in, refresh, and logout using token‑based authentication. Supports social login and enforces role‑based permissions so only authorized users can perform protected actions. Centralized security middleware protects endpoints and manages session validity." },
+          { "label": "Access Control", "description": "Enforces role-based permissions on endpoints and actions. Ensures different user roles (such as students, instructors, and administrators) have appropriate access to protected resources." }
+        ],
+        "explanation": "Both items have the same label and the descriptions both focus on enforcing role-based access control for protected resources. While one emphasizes authentication mechanisms, both describe central access control, so they are equivalent."
+      }
+    ],
+    "non_feature_labels": [
+      {
+        "group": [
+          { "label": "API Documentation", "description": "Generates and maintains interactive API documentation using standardized annotations. Keeps endpoints discoverable and current for client developers and integrators." },
+          { "label": "API Documentation", "description": "Refines which components are exposed in interactive API documentation and how they appear. Ensures documentation remains clear and focused on relevant endpoints." }
+        ],
+        "explanation": "Both have the same label and focus on the creation and maintenance of interactive API documentation, so are equivalent by intent."
+      }
+    ]
+  },
+  "result": {
+    "features": [
+      {
+        "label": "Access Control",
+        "description": "Provides secure sign‑up, role-based permissions, and access restriction for protected resources using authentication middleware.",
+        "merged_from": [
+          { "label": "Access Control", "description": "Provides secure sign‑up, sign‑in, refresh, and logout using token‑based authentication. Supports social login and enforces role‑based permissions so only authorized users can perform protected actions. Centralized security middleware protects endpoints and manages session validity." },
+          { "label": "Access Control", "description": "Enforces role-based permissions on endpoints and actions. Ensures different user roles (such as students, instructors, and administrators) have appropriate access to protected resources." }
+        ]
+      },
+      {
+        "label": "Analytics and Dashboards",
+        "description": "Provides dashboards and analytics endpoints for monitoring learner and system performance.",
+        "merged_from": [
+          { "label": "Analytics and Dashboards", "description": "Delivers learner dashboards with progress, upcoming deadlines, and course metrics. Exposes analytics endpoints for administrators to monitor activity, performance, and completion trends." }
+        ]
+      }
+    ],
+    "non_feature_labels": [
+      {
+        "label": "API Documentation",
+        "description": "Maintains interactive, up-to-date API documentation for developers using standardized annotations.",
+        "merged_from": [
+          { "label": "API Documentation", "description": "Generates and maintains interactive API documentation using standardized annotations. Keeps endpoints discoverable and current for client developers and integrators." },
+          { "label": "API Documentation", "description": "Refines which components are exposed in interactive API documentation and how they appear. Ensures documentation remains clear and focused on relevant endpoints." }
+        ]
+      },
+      {
+        "label": "Bug Fixes",
+        "description": "Corrects defects and addresses reliability issues throughout the codebase.",
+        "merged_from": [
+          { "label": "Bug Fixes", "description": "Corrects defects across controllers, authorization rules, scheduling logic, and data mapping to improve reliability. Resolves edge cases and ensures consistent responses and error handling." }
+        ]
+      }
+    ]
+  }
+}
+
+(For real, larger lists, groups and explanations should be longer and more comprehensive.)
+
+# Notes
+
+- All groupings and collapsed labels must be explicitly justified in your reasoning before the output.
+- Do not deduplicate or merge between features and non-feature labels—only compare items within each of the two lists.
+- For "merged_from", use exact input text for both label and description.
+- Always show your stepwise reasoning before the final synthesized lists.
+
+**Reminders:**  
+- First, analyze and justify all equivalence groupings by reasoning, then produce the final lists.
+- Use the output format and field names explicitly as described above.  
+- Remain as transparent and explicit as possible at every step.
+
