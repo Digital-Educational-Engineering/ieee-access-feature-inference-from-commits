@@ -1,6 +1,10 @@
 # Git Repository Analysis Tool
 
-This repository accompanies our publication, **"LLM-Driven Feature Inference for Analyzing Student Git Collaboration."** It contains the code used to extract commit data, infer feature labels from commit messages, and classify commits for analyzing collaboration in student software projects.
+This repository accompanies our publication, **"LLM-Driven Feature Inference for Analyzing Student Git Collaboration"**:
+
+[https://ieeexplore.ieee.org/document/11488560](https://ieeexplore.ieee.org/document/11488560)
+
+It contains the code used to extract commit data, infer feature labels from commit messages, and classify commits for analyzing collaboration in student software projects.
 
 The repository is released as a research artifact to support transparency and reproducibility. Contact and citation details are provided at the end of this README.
 
@@ -304,6 +308,6 @@ If you use this software in academic work, please cite the associated paper.
    author  = {Rawan Gedeon and Nasser Giacaman},
    journal = {IEEE Access},
    year    = {2026},
-   doi     = {COMING_SOON}
+   doi     = {10.1109/ACCESS.2026.3685720}
 }
 ```
